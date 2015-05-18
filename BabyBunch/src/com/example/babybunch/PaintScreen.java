@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
@@ -74,32 +76,20 @@ public class PaintScreen extends Activity implements OnClickListener,TextToSpeec
 		}
 		
 		
-		
-		
-
-		
 		LinearLayout paintLayout = (LinearLayout)findViewById(R.id.paint_colors);
 		currPaint = (ImageButton)paintLayout.getChildAt(0);
- 
- 
 		
 		drawBtn = (ImageButton)findViewById(R.id.draw_btn);
 		drawBtn.setOnClickListener(this);
- 
-
 		
 		eraseBtn = (ImageButton)findViewById(R.id.erase_btn);
 		eraseBtn.setOnClickListener(this);
-
 		
 		newBtn = (ImageButton)findViewById(R.id.new_btn);
 		newBtn.setOnClickListener(this);
 		
 		saveBtn = (ImageButton)findViewById(R.id.save_btn);
-		saveBtn.setOnClickListener(this);
-		
-		 
-	      
+		saveBtn.setOnClickListener(this);      
  
 	}
 
@@ -112,62 +102,44 @@ public class PaintScreen extends Activity implements OnClickListener,TextToSpeec
 
 	//user clicked paint
 	public void paintClicked(View view){
-			drawView.setErase(false); 
-
-	
-			String color = view.getTag().toString();
+		String color = view.getTag().toString();    
+		speakOut(color);
+			drawView.setErase(false);			
 			drawView.setColor(color); 
-			speakOut(color);
-
-	}
+			
+			}
 
 	@Override
 	public void onClick(View view){
 
 		if(view.getId()==R.id.draw_btn){
 			drawView.setErase(false);
- 
-
 		}
 		else if(view.getId()==R.id.erase_btn){
-			drawView.setErase(true);
- 
-		 
+			drawView.setErase(true);	 
 		}else if(view.getId()==R.id.save_btn){
             //save drawing
 			AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
 			saveDialog.setTitle("Save drawing");
 			saveDialog.setMessage("Save drawing to device Gallery?");
 			saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-			    public void onClick(DialogInterface dialog, int which){
-			    	
- 
-			    	
-//			        //save drawing
+			    public void onClick(DialogInterface dialog, int which){ 
 			    	drawView.setDrawingCacheEnabled(true);
- 
-			    	OutputStream fOutStream = null;	
-			    	Bitmap drawingBM = drawView.getDrawingCache();
-			    	try {	
-			    	if (drawingBM != null){
-			    	File drawingImageDirectory = new File(Environment.getExternalStorageDirectory().getPath()
-			    	+"/DCIM/Camera");
-			    	drawingImageDirectory.mkdir();
-
-			    	File file = new File(drawingImageDirectory, UUID.randomUUID().toString()+".png");
-
-			    	fOutStream = new FileOutputStream(file);
-
-			    	BufferedOutputStream bos = new BufferedOutputStream(fOutStream);
-
-			    	drawingBM.compress(Bitmap.CompressFormat.PNG, 100, bos);
-
-			    	bos.flush();
-			    	bos.close();	
-			    	}} catch(Exception e){
-			    	e.printStackTrace();
-			    	}
- 
+			    	  Bitmap bitmap = drawView.getDrawingCache();
+			    		SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+			    		String format = s.format(new Date());
+			    	    File imagePath = new File(Environment.getExternalStorageDirectory() + "/DCIM/100ANDRO/babybunch"+format+".JPEG");
+			    	    FileOutputStream fos;
+			    	    try {
+			    	        fos = new FileOutputStream(imagePath);
+			    	        bitmap.compress(CompressFormat.JPEG, 100, fos);
+			    	        fos.flush();
+			    	        fos.close();
+			    	    } catch (FileNotFoundException e) {
+			    	        Log.e("GREC", e.getMessage(), e);
+			    	    } catch (IOException e) {
+			    	        Log.e("GREC", e.getMessage(), e);
+			    	    }
 			    }
 			});
 			saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
@@ -212,6 +184,7 @@ public class PaintScreen extends Activity implements OnClickListener,TextToSpeec
 		
 	}
 	
+
 	private void speakOut(String colour) {
 
 		String word ;

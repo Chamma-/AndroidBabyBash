@@ -26,27 +26,20 @@ public class DrawingView extends View {
 	
 	private Bitmap canvasBitmap;
 	
-	private float brushSize ;
-	
 	private boolean erase=false;
 
 	public DrawingView(Context context, AttributeSet attrs){
 		super(context, attrs);
-		setupDrawing();
-	}
-
-	
-	private void setupDrawing(){		
-		brushSize = 10;		 
 		drawPath = new Path();
 		drawPaint = new Paint();
 		drawPaint.setColor(paintColor);
 		drawPaint.setAntiAlias(true);
-		drawPaint.setStrokeWidth(brushSize);
+		drawPaint.setStrokeWidth(10);
 		drawPaint.setStyle(Paint.Style.STROKE);
 		drawPaint.setStrokeJoin(Paint.Join.ROUND);
 		drawPaint.setStrokeCap(Paint.Cap.ROUND);
 		canvasPaint = new Paint(Paint.DITHER_FLAG);
+		
 	}
 
 	
