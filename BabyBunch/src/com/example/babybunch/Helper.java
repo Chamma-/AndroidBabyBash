@@ -1,7 +1,9 @@
 package com.example.babybunch;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -31,4 +33,17 @@ public class Helper extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	 public boolean onKeyDown(int keyCode, KeyEvent event) {
+	       if (keyCode == KeyEvent.KEYCODE_BACK ) {
+	       //stop.performClick();
+	    	   Intent intent = new Intent(Helper.this, MainMenu.class);
+	    	   finishAffinity();
+	    	   startActivityForResult(intent, 0);
+	    	   
+	       }
+	       return super.onKeyDown(keyCode, event);
+	   }
+	
+	
 }

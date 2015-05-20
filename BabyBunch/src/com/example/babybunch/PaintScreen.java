@@ -20,11 +20,13 @@ import android.os.Environment;
 import android.app.Activity;
 import android.app.AlertDialog; 
 import android.content.DialogInterface; 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Color;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,7 +123,7 @@ public class PaintScreen extends Activity implements OnClickListener,TextToSpeec
             //save drawing
 			AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
 			saveDialog.setTitle("Save drawing");
-			saveDialog.setMessage("Save drawing to device Gallery?");
+			saveDialog.setMessage("Do you want to save This?");
 			saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
 			    public void onClick(DialogInterface dialog, int which){ 
 			    	drawView.setDrawingCacheEnabled(true);
@@ -153,7 +155,7 @@ public class PaintScreen extends Activity implements OnClickListener,TextToSpeec
 			//new button
 			AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
 			newDialog.setTitle("New drawing");
-			newDialog.setMessage("Start new drawing (you will lose the current drawing)?");
+			newDialog.setMessage("Do you want to draw a new one ? this picture you draw will be gone then.");
 			newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
 				public void onClick(DialogInterface dialog, int which){
 					drawView.startNew();
@@ -230,6 +232,61 @@ public class PaintScreen extends Activity implements OnClickListener,TextToSpeec
 		
 	}
 
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	       if (keyCode == KeyEvent.KEYCODE_BACK ) {
+
+				AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+				newDialog.setTitle("Exit");
+				newDialog.setMessage("Do you want to Save before you leave ?");
+				newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface dialog, int which){	
+						drawView.setDrawingCacheEnabled(true);
+				    	  Bitmap bitmap = drawView.getDrawingCache();
+				    		SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+				    		String format = s.format(new Date());
+				    	    File imagePath = new File(Environment.getExternalStorageDirectory() + "/DCIM/100ANDRO/babybunch"+format+".JPEG");
+				    	    FileOutputStream fos;
+				    	    try {
+				    	        fos = new FileOutputStream(imagePath);
+				    	        bitmap.compress(CompressFormat.JPEG, 100, fos);
+				    	        fos.flush();
+				    	        fos.close();
+				    	    } catch (FileNotFoundException e) {
+				    	        Log.e("GREC", e.getMessage(), e);
+				    	    } catch (IOException e) {
+				    	        Log.e("GREC", e.getMessage(), e);
+				    	    }
+				    	    Intent intent = new Intent(PaintScreen.this, MainMenu.class);
+				    	    dialog.dismiss();  
+				    	    finishAffinity();
+				    	    
+				    	    startActivityForResult(intent, 0);
+					    	    
+					    	  			
+					}
+				});
+				newDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface dialog, int which){
+						 Intent intent = new Intent(PaintScreen.this, MainMenu.class);
+						   dialog.dismiss();
+						 finishAffinity();
+				    	   startActivityForResult(intent, 0);
+				    	    
+				    	
+				     
+						
+					}
+				});
+				newDialog.setNeutralButton("Stay", new DialogInterface.OnClickListener(){
+					public void onClick(DialogInterface dialog, int which){
+						dialog.cancel();
+					}
+				});
+				newDialog.show();
+
+	       }
+	       return super.onKeyDown(keyCode, event);
+	   }
 	
 	
 }

@@ -9,6 +9,7 @@
      Click speak to get a colour . you can repeat it using repeat. \n again click speak to get a new colour \n
     \n Baby piano \n\n
     Let the baby make some noise people</string>
+    <string name="musica">Music</string>
     <string name="rep">Repeat</string>
     <string name="speak">Speak</string>
     <string name="stop">Stop</string>

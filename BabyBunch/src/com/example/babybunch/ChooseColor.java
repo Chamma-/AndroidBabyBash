@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.app.Activity;
+import android.content.Intent;
  
 
 public class ChooseColor extends  Activity implements
@@ -250,8 +252,19 @@ TextToSpeech.OnInitListener{
 	}
 	
 	private void Repeatout() {
-
-
 		tts.speak(colour, TextToSpeech.QUEUE_FLUSH, null);
 	}
+	
+	 public boolean onKeyDown(int keyCode, KeyEvent event) {
+	       if (keyCode == KeyEvent.KEYCODE_BACK ) {
+	       //stop.performClick();
+	    	   Intent intent = new Intent(ChooseColor.this, MainMenu.class);
+	    	   finishAffinity();
+	    	   startActivityForResult(intent, 0);
+	    	    
+	       }
+	       return super.onKeyDown(keyCode, event);
+	   }
+	
+	
 }

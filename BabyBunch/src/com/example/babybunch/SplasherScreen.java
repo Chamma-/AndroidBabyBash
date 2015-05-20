@@ -18,7 +18,10 @@ public class SplasherScreen extends ActionBarActivity {
             public void run() {
             	try {
         			sleep(5000);
+        			finishAffinity();
         			startActivity(new Intent(getApplicationContext(),MainMenu.class));
+        			
+        			
         		} catch (Exception e) {
         			
         		}

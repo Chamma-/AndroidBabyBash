@@ -1,9 +1,11 @@
 package com.example.babybunch;
 
 import android.support.v7.app.ActionBarActivity; 
+import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -133,4 +135,16 @@ public class PianoScreen extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+	 public boolean onKeyDown(int keyCode, KeyEvent event) {
+	       if (keyCode == KeyEvent.KEYCODE_BACK ) {
+	       //stop.performClick();
+	    	   Intent intent = new Intent(PianoScreen.this, MainMenu.class);
+	    	   startActivityForResult(intent, 0);
+	    	   android.os.Process.killProcess(android.os.Process.myPid());
+	       }
+	       return super.onKeyDown(keyCode, event);
+	   }
+	
 }

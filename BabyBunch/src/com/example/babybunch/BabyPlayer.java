@@ -1,6 +1,7 @@
 package com.example.babybunch;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 //import android.graphics.LightingColorFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -388,9 +389,13 @@ public class BabyPlayer extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	   public boolean onKeyDown(int keyCode, KeyEvent event) {
+	 public boolean onKeyDown(int keyCode, KeyEvent event) {
 	       if (keyCode == KeyEvent.KEYCODE_BACK ) {
-	       stop.performClick();
+	           stop.performClick();
+	    	   Intent intent = new Intent(BabyPlayer.this, MainMenu.class);
+	    	   finishAffinity();
+	    	   startActivityForResult(intent, 0);
+	    	   
 	       }
 	       return super.onKeyDown(keyCode, event);
 	   }
